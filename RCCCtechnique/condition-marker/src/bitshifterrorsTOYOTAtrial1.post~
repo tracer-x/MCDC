@@ -1,0 +1,47 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#include<pthread.h>
+#include<unistd.h>
+
+# define PRINT_DEBUG 1
+int kappa;
+int vflag;
+
+int vflag_copy;
+int vflag_file;
+int idx, sink;
+double dsink;
+void *psink;
+
+
+
+int main()
+{
+kappa = 0;
+	klee_make_symbolic(&vflag_copy, sizeof(int), "vflag_copy");
+        klee_make_symbolic(&vflag_file, sizeof(int), "vflag_file");
+        klee_make_symbolic(&vflag, sizeof(int), "vflag");
+
+
+	/* BitShift errors */
+        if((vflag_file == 1) || (vflag_file == 888)) 
+        {
+		
+        if ((vflag == 1) || (vflag == 888))
+	{
+		
+	}
+}
+	
+}
+
+	   
+
+

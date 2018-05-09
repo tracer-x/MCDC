@@ -1,0 +1,371 @@
+
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+int kappa;
+// method ids
+int m_flush = 1;
+int m_PipedOutputStream = 2;
+int m_close = 3;
+int m_write = 4;
+int m_connect_1 = 5;
+int m_connect_2 = 6;
+ 
+
+int main() {
+kappa = 0;
+  int q;
+  klee_make_symbolic(&q, sizeof(int), "q");
+  int method_id;
+
+  // variables
+    int this_sink = 0;
+    int this_sinkConnected = 0;
+   
+
+  while (1) {
+
+    // parameters
+         int P1;
+        int P2;
+        int P3;
+        int P4;
+        int a1,a2,a3,a4,a5,a6,a7,a8,a9,a10;
+        int a11,a12,a13,a14,a15,a16,a17,a18;
+
+        klee_make_symbolic(&P1, sizeof(int), "P1");
+        klee_make_symbolic(&P2, sizeof(int), "P2");
+        klee_make_symbolic(&P3, sizeof(int), "P3");
+        klee_make_symbolic(&P4, sizeof(int), "P4");
+
+    // states
+        if (q == 0){      
+                 klee_make_symbolic(&a1, sizeof(int), "a1");
+                if(a1){
+                  // assume guard
+                  if ( 1 ){ 
+                    // record method id
+                    method_id = 2;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 2;
+                    // post condition
+                    this_sink=0; this_sinkConnected=0; 
+                  }
+                  continue;
+                }
+
+          continue;
+        }
+        if (q == 1){      
+        klee_make_symbolic(&a2, sizeof(int), "a2");
+                if(a2){
+                  // assume guard
+                  if ( 1 ){ 
+                    // record method id
+                    method_id = 4;
+                    // non-conformance condition 
+                    if ( (this_sink != 0) ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a3, sizeof(int), "a3");
+                if(a3){
+                  // assume guard
+                  if ( ((P2 != 1) && (P1 != 0)) ){ 
+                    // record method id
+                    method_id = 5;
+                    // non-conformance condition 
+                    if ( ((P2 != 1) && ((this_sink == 0) && (P1 != 0))) ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a4, sizeof(int), "a4");
+                if(a4){
+                  // assume guard
+                  if ( !((P2 != 1) && (P1 != 0)) ){ 
+                    // record method id
+                    method_id = 6;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+
+          continue;
+        }
+        if (q == 2){      
+        klee_make_symbolic(&a5, sizeof(int), "a5");
+                if(a5){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0) ){ 
+                    // record method id
+                    method_id = 1;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 2;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a6, sizeof(int), "a6");
+                if(a6){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0)&& ((this_sink == 0) || 0) ){ 
+                    // record method id
+                    method_id = 1;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 2;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a7, sizeof(int), "a7");
+                if(a7){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0) ){ 
+                    // record method id
+                    method_id = 3;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 2;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a8, sizeof(int), "a8");
+                if(a8){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0)&& ((this_sink == 0) || 0) ){ 
+                    // record method id
+                    method_id = 3;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 2;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a9, sizeof(int), "a9");
+                if(a9){
+                  // assume guard
+                  if ( 1 ){ 
+                    // record method id
+                    method_id = 4;
+                    // non-conformance condition 
+                    if ( (this_sink != 0) ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a10, sizeof(int), "a10");
+                if(a10){
+                  // assume guard
+                  if ( ((P2 != 1) && (P1 != 0)) ){ 
+                    // record method id
+                    method_id = 5;
+                    // non-conformance condition 
+                    if ( (((this_sink != 0) && (P1 != 0)) && ((P2 != 1) && (P1 != 0))) ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 3;
+                    // post condition
+                    this_sink=P1; this_sinkConnected=1; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a11, sizeof(int), "a11");
+                if(a11){
+                  // assume guard
+                  if ( !((P2 != 1) && (P1 != 0)) ){ 
+                    // record method id
+                    method_id = 6;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+
+          continue;
+        }
+        if (q == 3){      
+        klee_make_symbolic(&a12, sizeof(int), "a12");
+                if(a12){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0) ){ 
+                    // record method id
+                    method_id = 1;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 3;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a13, sizeof(int), "a13");
+                if(a13){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0)&& ((this_sink == 0) || 0) ){ 
+                    // record method id
+                    method_id = 1;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 3;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a14, sizeof(int), "a14");
+                if(a14){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0) ){ 
+                    // record method id
+                    method_id = 3;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 3;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a15, sizeof(int), "a15");
+                if(a15){
+                  // assume guard
+                  if ( 1&& ((this_sink != 0) || 0)&& ((this_sink == 0) || 0) ){ 
+                    // record method id
+                    method_id = 3;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 3;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a16, sizeof(int), "a16");
+                if(a16){
+                  // assume guard
+                  if ( 1 ){ 
+                    // record method id
+                    method_id = 4;
+                    // non-conformance condition 
+                    if ( (this_sink == 0) ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 3;
+                    // post condition
+                    this_sink=this_sink; this_sinkConnected=this_sinkConnected; 
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a17, sizeof(int), "a17");
+                if(a17){
+                  // assume guard
+                  if ( ((P2 != 1) && (P1 != 0)) ){ 
+                    // record method id
+                    method_id = 5;
+                    // non-conformance condition 
+                    if ( ((P2 != 1) && ((this_sink == 0) && (P1 != 0))) ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+                klee_make_symbolic(&a18, sizeof(int), "a18");
+                if(a18){
+                  // assume guard
+                  if ( !((P2 != 1) && (P1 != 0)) ){ 
+                    // record method id
+                    method_id = 6;
+                    // non-conformance condition 
+                    if ( 0 ) {
+                      goto ERROR;
+                    }
+                    // state update
+                    q = 1;
+                    // post condition
+                    break;
+                  }
+                  continue;
+                }
+
+          continue;
+        }
+   
+
+  } // end while
+
+ 

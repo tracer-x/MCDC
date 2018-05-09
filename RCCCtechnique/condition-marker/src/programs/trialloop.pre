@@ -1,0 +1,46 @@
+
+#include <klee/klee.h>
+#include <stdio.h>
+int kappa;
+int sanghu;
+int main()
+{
+int i,j,k,l=0;
+kappa = 0;
+
+  klee_make_symbolic(&i, sizeof(int), "i");
+  klee_make_symbolic(&j, sizeof(int), "j");
+  klee_make_symbolic(&k, sizeof(int), "k");
+
+  
+
+  
+  
+  while(l<100)
+ {
+  
+  sanghu = kappa;
+  kappa = 0;
+  if ((i > 5) && ((j < 10) || (k == 50)))
+  {
+  printf("sanghu");
+  
+  }
+  else
+  {
+  printf("rasool");
+  
+  }
+  l++;
+ 
+  }
+  
+  
+  if(sanghu!=0)
+       kappa = sanghu;
+printf("*****The value of SANGHU = %d *****\n", kappa);
+
+ 
+
+
+ 

@@ -1,0 +1,282 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#include<pthread.h>
+#include<unistd.h>
+
+# define PRINT_DEBUG 1
+
+int vflag;
+
+int vflag_copy;
+int vflag_file;
+int idx, sink;
+double dsink;
+void *psink;
+
+void dynamic_buffer_underrun_001 ()
+{
+	char *buf=(char*) calloc(5,sizeof(char));
+	int i;
+	printf("print bufferundr");
+	if(buf!=NULL)
+	{
+	for (i=4;i>=-1;i--)
+	    {
+		buf[i]=1;  /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+	    }
+	    free(buf);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ *When using a pointer to short
+ */
+void dynamic_buffer_underrun_002 ()
+{
+	printf("underrun2");
+	short *buf=(short*) calloc(5,sizeof(short));
+	if(buf!=NULL)
+	{
+	    *(buf-5)=1; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		free(buf);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ *When using a pointer to int
+ */
+void dynamic_buffer_underrun_003 ()
+{
+	int *buf=(int*) calloc(5,sizeof(int));
+	int ret;
+	int i;
+	if(buf!=NULL)
+	{
+		for (i=0;i<5;i++)
+		{
+			buf[i]=1;
+		}
+	ret = buf[-1]; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		free(buf);
+		printf("%d",ret);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ *When using a pointer to int
+ */
+void dynamic_buffer_underrun_004 ()
+{
+	int *buf=(int*) calloc(5,sizeof(int));
+	if(buf!=NULL)
+	{
+	    *(buf-5) = 1; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		free(buf);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ * When using a pointer to long
+ */
+void dynamic_buffer_underrun_005 ()
+{
+	long *buf=(long*) calloc(5,sizeof(long));
+	int i;
+	if(buf!=NULL)
+	{
+	    for(i=-1;i<5;i++)
+		{
+	        buf[i]=1; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		}
+		free(buf);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ * When using a pointer to float
+ */
+void dynamic_buffer_underrun_006 ()
+{
+	float *buf=(float*) calloc(5,sizeof(float));
+	int i;
+	if(buf!=NULL)
+	{
+		for(i=-1;i<5;i++)
+		{
+			buf[i]=1.0; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		}
+	    free(buf);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ * When using a pointer to double
+ */
+void dynamic_buffer_underrun_007 ()
+{
+	double *buf=(double*) calloc(5,sizeof(double));
+	int i;
+	if(buf!=NULL)
+	{
+		for(i=-1;i<5;i++)
+		{
+			buf[i]=1.0; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		}
+	    free(buf);
+	}
+}
+
+/*
+ * Dynamic buffer underrun
+ * When using double pointers to the type int
+ */
+void dynamic_buffer_underrun_008 ()
+{
+	int **buf = (int**) calloc(5,sizeof(int*));
+	int i,j;
+
+	for(i=0;i<5;i++)
+		buf[i]=(int*) calloc(5,sizeof(int));
+
+	for(i=-1;i<5;i++)
+	{
+		for(j=0;j<5;j++)
+		{
+			*(*(buf+i)+j)=i; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		}
+		if(i>0)
+		free(buf[i]);
+	}
+	free(buf);
+}
+
+/*
+ * Dynamic buffer underrun
+ * When using double pointers to the type int
+ */
+void dynamic_buffer_underrun_009 ()
+{
+	int *buf1=(int*)calloc(5,sizeof(int));
+	int *buf2=(int*)calloc(5,sizeof(int));
+	int *buf3=(int*)calloc(5,sizeof(int));
+	int *buf4=(int*)calloc(5,sizeof(int));
+	int *buf5=(int*)calloc(5,sizeof(int));
+	int **pbuf[5] = {&buf1, &buf2, &buf3, &buf4, &buf5};
+	int i,j=4;
+	for(i=0;i<5;i++)
+	{
+		*((*pbuf[i-3])+j)=5; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+	}
+	free(buf1);
+	free(buf2);
+	free(buf3);
+	free(buf4);
+	free(buf5);
+}
+
+/*
+ * Dynamic buffer underrun
+ * When using pointers to the structure
+ */
+typedef struct {
+	int a;
+	int b;
+	int c;
+} dynamic_buffer_underrun_010_s_001;
+
+void dynamic_buffer_underrun_010 ()
+{
+	dynamic_buffer_underrun_010_s_001* sbuf= (dynamic_buffer_underrun_010_s_001*) calloc(5,sizeof(dynamic_buffer_underrun_010_s_001)) ;
+	if(sbuf!=NULL)
+	{
+	    sbuf[-1].a = 1; /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+	    free(sbuf);
+	}
+}
+
+
+int main()
+{
+	klee_make_symbolic(&vflag_copy, sizeof(int), "vflag_copy");
+        klee_make_symbolic(&vflag_file, sizeof(int), "vflag_file");
+        klee_make_symbolic(&vflag, sizeof(int), "vflag");
+
+/* Buffer underrun(dynamic buffer) */
+	if (vflag_file ==3 || vflag_file == 888)
+	{
+		if (vflag == 1 || vflag ==888)
+	{
+		dynamic_buffer_underrun_001();
+	}
+
+	if (vflag == 2 || vflag ==888)
+	{
+		dynamic_buffer_underrun_002();
+	}
+
+	if (vflag == 3 || vflag ==888)
+	{
+		dynamic_buffer_underrun_003();
+	}
+
+	if (vflag == 4 || vflag ==888)
+	{
+		dynamic_buffer_underrun_004();
+	}
+
+	if (vflag == 5 || vflag ==888)
+	{
+		dynamic_buffer_underrun_005();
+	}
+
+	if (vflag == 6 || vflag ==888)
+	{
+		dynamic_buffer_underrun_006();
+	}
+
+	if (vflag == 7 || vflag ==888)
+	{
+		dynamic_buffer_underrun_007();
+	}
+
+	if (vflag == 8 || vflag ==888)
+	{
+		dynamic_buffer_underrun_008();
+	}
+
+	if (vflag == 9 || vflag ==888)
+	{
+		dynamic_buffer_underrun_009();
+	}
+
+	if (vflag == 10 || vflag ==888)
+	{
+		dynamic_buffer_underrun_010();
+	}
+
+	
+
+
+
+	}
+       
+	
+
+
+	   
+return 0;
+}
+

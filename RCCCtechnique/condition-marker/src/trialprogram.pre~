@@ -1,0 +1,18 @@
+#include <klee/klee.h>
+#include <assert.h>
+#include <stdio.h>
+int kappa;
+int main() {
+  int x;
+  kappa = 0;
+  klee_make_symbolic(&x, sizeof(x), "x");
+
+if(((x > 0) || !(y > 0)))
+{
+printf("sanghu \n \n");
+}
+else
+{
+printf("rasool \n \n");
+}       
+

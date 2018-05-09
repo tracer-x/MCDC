@@ -1,0 +1,27 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+
+
+int test(int x, int y, int z) {
+    if (x > 0 || (y < 0 && z == 0)) {
+        return 1;
+    }
+    return 0;
+}
+
+int main(int argc, char **argv) {
+
+    int x;
+    int y; 
+    int z;
+    klee_make_symbolic(&x, sizeof(int), "x");
+    klee_make_symbolic(&y, sizeof(int), "y");
+    klee_make_symbolic(&z, sizeof(int), "z");
+    test(x, y, z);
+
+    return 0;
+}

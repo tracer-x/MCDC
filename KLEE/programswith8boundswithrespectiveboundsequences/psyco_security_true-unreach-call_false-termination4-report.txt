@@ -1,0 +1,5 @@
+Total number of Reachable paths or valid test cases are =: 116
+Total number of Unreachable paths or invalid test cases or not found sequences are =:74
+Total number of MC/DC Sequences are =: 190
+The Percentage of valid test cases is =: 61%
+******The KLEE report Finished*******
