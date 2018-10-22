@@ -1,0 +1,77 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+#include <stdlib.h>
+
+#define RATIO 382 / 1000
+
+int A, B, C;
+
+int f(int arg) {
+    return A*arg*arg + B*arg + C;
+}
+
+int goldensectionsearch(int a, int b, int c, int error) {
+    int x, range, fx, fb;
+
+    range = abs(c - a);
+    if ((range < error)) 
+    {
+        return (c + a) / 2.0;
+    }
+    int m = (c - b);
+    int n = (b - a);
+    if ((m > n)) 
+    {
+        x = b + (c - b) * RATIO;
+    }
+    else {
+        x = b - (b - a) * RATIO;
+    }
+
+    fx = f(x);
+    fb = f(b);
+    if ((fx < fb)) {
+        int o = (c - b);
+        int p = (b - a);
+        if ((o > p)) 
+        {
+            return goldensectionsearch(b, x, c, error);
+        }
+        else 
+        {
+            return goldensectionsearch(a, x, b, error);
+        }
+    }
+    else 
+        {
+        int q = (c - b);
+        int r = (b - a);
+        if ((q > r)) {
+            return goldensectionsearch(a, b, x, error);
+        }
+        else {
+            return goldensectionsearch(x, b, c, error);
+        }
+    }
+}
+
+int main(int argc, char **argv) {
+
+    
+    klee_make_symbolic(&A, sizeof(int), "A");
+    klee_make_symbolic(&B, sizeof(int), "B");
+    klee_make_symbolic(&C, sizeof(int), "C");
+    // make sure the first factor is positive
+    if (A <= 0) {
+        return 0;
+    }
+
+
+    goldensectionsearch(-1000, -200, 1000, 200);
+    
+    return 0;
+}

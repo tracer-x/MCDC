@@ -1,0 +1,40 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+int kappa;
+int test(int a, int b, int c, int d, int e) {
+int m = (a * b);
+int n = (b * c);
+int o = (c * d);
+int p = (e * d);
+int q = (d * c);
+int r = (b * c);
+
+    if ( !((a == 0) || (b == 0) || (c == 0) || (d == 0) || (e == 0)) && (((m == c) && (n == d) && (o == e)) || ((p == c) && (q == b) && (r == a)))) 
+   {
+        return 1;
+    }
+    else 
+    {
+        return 0;
+    }
+}
+
+int main(int argc, char **argv) {
+kappa = 0;
+    int a;
+    int b;
+    int c; 
+    int d;
+    int e; 
+     klee_make_symbolic(&a, sizeof(int), "a");
+     klee_make_symbolic(&b, sizeof(int), "b");
+     klee_make_symbolic(&c, sizeof(int), "c");
+     klee_make_symbolic(&d, sizeof(int), "d");
+     klee_make_symbolic(&e, sizeof(int), "e");
+    test(a, b, c, d, e);
+
+ 

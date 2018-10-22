@@ -1,0 +1,23 @@
+#include <klee/klee.h>
+#include <assert.h>
+#include <stdio.h>
+int main() {
+  int a,b,c,d,e,f;
+  klee_make_symbolic(&a, sizeof(a), "a");
+  klee_make_symbolic(&b, sizeof(b), "b");
+  /*klee_make_symbolic(&c, sizeof(c), "c");
+  klee_make_symbolic(&d, sizeof(d), "d");
+  klee_make_symbolic(&e, sizeof(e), "e");
+  klee_make_symbolic(&f, sizeof(f), "f");*/
+printf("\n sanghu is a good boy");
+if(((x > 0) || !(x > 0)))
+{
+printf("sanghu \n \n");
+}
+else
+{
+printf("rasool \n \n");
+}       
+
+return 1;
+} 

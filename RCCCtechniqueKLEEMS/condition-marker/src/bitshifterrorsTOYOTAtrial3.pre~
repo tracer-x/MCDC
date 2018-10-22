@@ -1,0 +1,84 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#include<pthread.h>
+#include<unistd.h>
+
+# define PRINT_DEBUG 1
+
+int vflag;
+
+int vflag_copy;
+int vflag_file;
+int idx, sink;
+double dsink;
+void *psink;
+
+void bit_shift_001 ()
+{
+	int a = 1;
+	int ret;
+	ret = a << 32;/*Tool should detect this line as error*/ /*ERROR:Bit shift error*/
+        sink = ret;
+}
+
+/*
+ * Types of defects: BitShift errors
+ * Complexity: long	Beyond the size of the left shift - Constant
+ */
+void bit_shift_002 ()
+{
+	long a = 1;
+	long ret;
+	ret = a << 32;/*Tool should detect this line as error*/ /*ERROR:Bit shift error*/
+        sink = ret;
+}
+
+/*
+ * Types of defects: BitShift errors
+ * Complexity: unsigned int	Beyond the size of the left shift -Constant
+ */
+void bit_shift_003 ()
+{
+	unsigned int a = 1;
+	unsigned int ret;
+	ret = a << 32;/*Tool should detect this line as error*/ /*ERROR:Bit shift error*/
+        sink = ret;
+}
+
+
+
+int main()
+{
+	klee_make_symbolic(&vflag_copy, sizeof(int), "vflag_copy");
+        klee_make_symbolic(&vflag_file, sizeof(int), "vflag_file");
+        klee_make_symbolic(&vflag, sizeof(int), "vflag");
+
+
+	/* BitShift errors */
+        if((vflag_file == 1) || (vflag_file == 888)) 
+        {
+		
+        if ((vflag == 1) || (vflag == 888))
+	{
+		bit_shift_001();
+	}
+
+	if (vflag == 2 || vflag == 888)
+	{
+		bit_shift_002();
+	}
+
+	
+}
+
+	   
+return 0;
+}
+

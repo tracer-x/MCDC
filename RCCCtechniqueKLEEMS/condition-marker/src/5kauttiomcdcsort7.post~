@@ -1,0 +1,62 @@
+#include<stdio.h>
+#ifdef LLBMC
+#include <llbmc.h>
+#else
+#include <klee/klee.h>
+#endif
+
+#define LEN 7
+int kappa;
+void swap(int *array, int a, int b) {
+    int tmp;
+
+    // swap values in indices a and b
+    tmp = array[a];
+    array[a] = array[b];
+    array[b] = tmp;
+}
+
+void quicksort(int *array, int length) {
+    int pivot, pivotindex, value, valueindex;
+
+    // no need to sort an array of size 1 or 0
+    if ((length <= 1)) {
+        return;
+    }
+
+    // choose the last value in the array as the pivot
+    pivot = array[length-1];
+    // split the array in place into three groups: values less than the pivot,
+    // the pivot, and values larger than the pivot
+    pivotindex = 0;
+    int a = (length - 1);
+    for (valueindex = 0; (valueindex < a); valueindex++) {
+        value = array[valueindex];
+        if ((value < pivot)) {
+            swap(array, valueindex, pivotindex);
+            pivotindex++;
+        }
+    }
+    // move the pivot into the correct position
+    swap(array, length-1, pivotindex);
+
+    // recursively sort the left and the right side of the array
+    quicksort(&array[0], pivotindex);
+    quicksort(&array[pivotindex+1], length-(pivotindex+1));
+}
+
+int main(int argc, char **argv) {
+      kappa = 0;
+    int i, array[7];
+
+    // initialize the array with input values
+        for (i = 0; (i < 7); i++) {
+        int s;
+        klee_make_symbolic(&s, sizeof(int), "s");
+        array[i]=s;
+    }
+
+    // sort the array
+    quicksort(array, 7);
+
+ 

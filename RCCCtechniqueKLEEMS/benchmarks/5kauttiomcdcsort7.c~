@@ -1,0 +1,54 @@
+#include <lct.h>
+
+#define LEN 7
+
+void swap(int *array, int a, int b) {
+    int tmp;
+
+    // swap values in indices a and b
+    tmp = array[a];
+    array[a] = array[b];
+    array[b] = tmp;
+}
+
+void quicksort(int *array, int length) {
+    int pivot, pivotindex, value, valueindex;
+
+    // no need to sort an array of size 1 or 0
+    if (length <= 1) {
+        return;
+    }
+
+    // choose the last value in the array as the pivot
+    pivot = array[length-1];
+    // split the array in place into three groups: values less than the pivot,
+    // the pivot, and values larger than the pivot
+    pivotindex = 0;
+    for (valueindex = 0; valueindex < length-1; valueindex++) {
+        value = array[valueindex];
+        if (value < pivot) {
+            swap(array, valueindex, pivotindex);
+            pivotindex++;
+        }
+    }
+    // move the pivot into the correct position
+    swap(array, length-1, pivotindex);
+
+    // recursively sort the left and the right side of the array
+    quicksort(&array[0], pivotindex);
+    quicksort(&array[pivotindex+1], length-(pivotindex+1));
+}
+
+int main(int argc, char **argv) {
+    int i, array[LEN];
+
+    // initialize the array with input values
+    for (i = 0; i < LEN; i++) {
+        array[i] = lct_get_int();
+    }
+
+    // sort the array
+    quicksort(array, LEN);
+
+    return 0;
+}
